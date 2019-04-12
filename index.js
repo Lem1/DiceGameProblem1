@@ -52,3 +52,9 @@ const DiceGame = {
         }
     }
 }
+
+$(document).ready(function() {
+    $("ButtonBet").click(function() {
+        DiceGame.buttonClicked();
+    })
+});
