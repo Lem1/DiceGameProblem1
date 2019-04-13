@@ -17,4 +17,8 @@ input {
     margin-bottom: .5em;
 }
 span { color: red; }
-#ButtonBet{display: block;}
+#divStatus { height: 17px; }
+button {
+    display: block;
+    width: 82px;
+}

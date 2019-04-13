@@ -7,52 +7,73 @@ var $ = function(id) {
     return document.getElementById(id);
 };
 
-const DiceGame = {
-    image1: $("image1"),
-    image2: $("image2"),
-    balance: $("balance"),
-    turnCount: $("turnCount"),
-    status: $("status"),
-    ButtonBet: $("ButtonBet"),
-    count: 0,
-    bal: 5, 
+const Dice = {
+    elemImage1: $("image1"),
+    elemImage2: $("image2"),
+    equal: false,
+    sum: 0,
 
-    buttonClicked: function() {
+    rollDie: function() {
         // get random numbers between 1 and 6
         let ranNum1 = Math.ceil((Math.random() * 6));
         let ranNum2 = Math.ceil((Math.random() * 6));
+        // equal
+        this.equal = ranNum1 === ranNum2; 
+        // sum
+        this.sum = ranNum1 + ranNum2;
+        
         // update dice images
-        this.image1.src="./images/dice-"+ ranNum1 +".jpg";
-        this.image2.src ="./images/dice-"+ ranNum2 + ".jpg";
-        
-        // add dice count together
-        let sumnum= ranNum1 + ranNum2;
-        if (ranNum1===ranNum2 || sumnum===7 || sumnum===11) {
-            // player won
-            this.bal+=1;
-            this.balance.innerHTML=this.bal;
-            this.status.innerHTML="Win";
-        } else {
-            // player lost
-            this.bal -=1;
-            this.balance.innerHTML=this.bal;
-            this.status.innerHTML=" You Lost";
-        }
-
-        // update turn
-        this.count+=1;
-        
-        // check win or lose
-        this.turnCount.innerHTML=this.count;
-        if (this.count==45) {
-            this.status.innerHTML="Game Over - you take home $" + this.bal;
-            this.ButtonBet.disabled = true;
-        } else if (this.bal===0) {  
-            this.status.innerHTML="Game Over - you lost...";
-            this.ButtonBet.disabled = true;;
-        }
+        this.elemImage1.src="./images/dice-"+ ranNum1 +".jpg";
+        this.elemImage2.src="./images/dice-"+ ranNum2 + ".jpg";
     }
 }
 
-$("ButtonBet").addEventListener("click", function() { DiceGame.buttonClicked(); } );
+const DiceGame = {
+    
+    elemBalance: $("balance"),
+    elemStatus: $("status"),
+    elemTurnCount: $("turnCount"),
+    elemButtonBet: $("ButtonBet"),
+    elemButtonQuit: $("ButtonQuit"),
+    buttons: $(':button'),
+    turnCount: 0,
+    bal: 5, 
+
+    buttonBetClicked: function() {
+        Dice.rollDie();
+        
+        // determine win/loss for round
+        if (Dice.equal || Dice.sum===7 || Dice.sum===11) {
+            // player won
+            this.elemBalance.innerHTML=++this.bal;
+            this.elemStatus.innerHTML="Win";
+        } else {
+            // player lost
+            this.elemBalance.innerHTML=--this.bal;
+            this.elemStatus.innerHTML="Loss";
+        }
+
+        // update turn
+        this.turnCount+=1;
+        
+        // check win or lose
+        this.elemTurnCount.innerHTML=this.turnCount;
+        if (this.bal===0) {  
+            this.elemStatus.innerHTML="Game Over - you lost...";
+            //this.buttons.prop('disabled', true);
+            this.elemButtonBet.disabled = true;
+            this.elemButtonQuit.disabled = true;
+        }
+    },
+
+    buttonQuitClicked: function() {
+        this.elemStatus.innerHTML="Game Over - you take home $" + this.bal;
+        //this.buttons.prop('disabled', true);
+        this.elemButtonBet.disabled = true;
+        this.elemButtonQuit.disabled = true;
+    }
+}
+
+$("ButtonBet").addEventListener("click", function() { DiceGame.buttonBetClicked(); } );
+$("ButtonQuit").addEventListener("click", function() { DiceGame.buttonQuitClicked(); } );
 
