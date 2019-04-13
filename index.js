@@ -1,5 +1,5 @@
 ﻿/**
- * Created by bcuser on 4/4/19.
+ * Created by LemLem Haile and Craig Alford on 4/13/19.
  */
 
 // set jQuery-like variable
@@ -35,7 +35,7 @@ const DiceGame = {
     elemTurnCount: $("turnCount"),
     elemButtonBet: $("ButtonBet"),
     elemButtonQuit: $("ButtonQuit"),
-    buttons: $(':button'),
+    //buttons: $(':button'),
     turnCount: 0,
     bal: 5, 
 
@@ -55,9 +55,9 @@ const DiceGame = {
 
         // update turn
         this.turnCount+=1;
-        
-        // check win or lose
         this.elemTurnCount.innerHTML=this.turnCount;
+        
+        // check lost the game
         if (this.bal===0) {  
             this.elemStatus.innerHTML="Game Over - you lost...";
             //this.buttons.prop('disabled', true);
